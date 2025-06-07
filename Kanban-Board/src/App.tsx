@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { useState } from 'react';
 import { DropableSection, Card } from './components/atoms/DropableSection';
 import { DndContext, rectIntersection } from '@dnd-kit/core';
+import InsertTask from './components/atoms/InsertTask';
 
 const App = () => {
   const [todoItems, setTodoItems] = useState<Card[]>([
@@ -54,22 +55,22 @@ const App = () => {
     }
   };
 
+  function onAddtask(title: string, section: string, id: string) {
+    addToSection(section, { id, title });
+  }
+
   return (
     <DndContext
       onDragEnd={e => {
-        console.log(e);
-
-        const currentSection = e?.over?.id || ''; // Where the card is dropped
-        const cardId = e?.active?.data?.current?.id; // The card that is being dragged (ID)
-        const cardTitle = e?.active?.data?.current?.title; // The card that is being dragged (Title)
-        const prevSection = e?.active?.data?.current?.section; // The section that the card was in before
+        const currentSection = e?.over?.id || '';
+        const cardId = e?.active?.data?.current?.id;
+        const cardTitle = e?.active?.data?.current?.title;
+        const prevSection = e?.active?.data?.current?.section;
 
         if (currentSection !== prevSection) {
-          console.log(`${cardTitle} moved from ${prevSection} to ${currentSection}`);
+          removeFromSection(prevSection, cardId);
+          addToSection(currentSection.toString(), { id: cardId, title: cardTitle });
         }
-
-        removeFromSection(prevSection, cardId);
-        addToSection(currentSection.toString(), { id: cardId, title: cardTitle });
       }}
       collisionDetection={rectIntersection}
     >
@@ -96,6 +97,7 @@ const App = () => {
           <DropableSection title="In Progress" items={inProgressItems} />
           <DropableSection title="Done" items={doneItems} />
         </Flex>
+        <InsertTask onAddTask={onAddtask} />
       </Flex>
     </DndContext>
   );

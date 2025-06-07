@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Flex, Text } from '@chakra-ui/react';
 import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
 interface DraggableCardProps {
   title: string;
@@ -9,7 +10,7 @@ interface DraggableCardProps {
 }
 
 const DraggableCard: React.FC<DraggableCardProps> = ({ title, id, section }) => {
-  const { isDragging, setNodeRef, listeners, attributes } = useDraggable({
+  const { isDragging, setNodeRef, listeners, attributes, transform } = useDraggable({
     id: id,
     data: {
       title: title,
@@ -27,6 +28,7 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ title, id, section }) => 
       ref={setNodeRef}
       {...listeners}
       {...attributes}
+      transform={CSS.Translate.toString(transform)}
       direction="column"
       p={3}
       borderRadius="md"
@@ -36,7 +38,6 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ title, id, section }) => 
       boxShadow={isDragging ? 'xl' : 'sm'}
       cursor="grab"
       opacity={isDragging ? 0.8 : 1}
-      transform={isDragging ? 'scale(1.02)' : 'scale(1)'}
       _active={{ cursor: 'grabbing' }}
       _hover={{
         boxShadow: 'md',
