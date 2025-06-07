@@ -5,13 +5,16 @@ import { useDraggable } from '@dnd-kit/core';
 interface DraggableCardProps {
   title: string;
   id: string | number;
+  section: string;
 }
 
-const DraggableCard: React.FC<DraggableCardProps> = ({ title, id }) => {
+const DraggableCard: React.FC<DraggableCardProps> = ({ title, id, section }) => {
   const { isDragging, setNodeRef, listeners, attributes } = useDraggable({
     id: id,
     data: {
       title: title,
+      section: section,
+      id: id,
     },
   });
 

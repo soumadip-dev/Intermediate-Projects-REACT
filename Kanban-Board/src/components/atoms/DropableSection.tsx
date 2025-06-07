@@ -35,7 +35,7 @@ const DropableSection: React.FC<DropableSectionProps> = ({ title, items }) => {
         gap={2}
       >
         {items.map((card: Card) => (
-          <DraggableCard title={card.title} id={card.id} key={card.id} />
+          <DraggableCard section={title} title={card.title} id={card.id} key={card.id} />
         ))}
       </Flex>
     </Flex>
