@@ -59,6 +59,8 @@ const App = () => {
     addToSection(section, { id, title });
   }
 
+  // ... (keep all the imports and logic exactly the same until the return statement)
+
   return (
     <DndContext
       onDragEnd={e => {
@@ -74,9 +76,9 @@ const App = () => {
       }}
       collisionDetection={rectIntersection}
     >
-      <Flex direction="column" minH="100vh" bg="gray.50" p={6}>
+      <Flex direction="row" minH="100vh" bg="gray.50" p={6} gap={6}>
         <Flex
-          flex={1}
+          flex={0.9}
           gap={6}
           overflowX="auto"
           pb={4}
@@ -88,7 +90,7 @@ const App = () => {
               background: 'transparent',
             },
             '&::-webkit-scrollbar-thumb': {
-              background: '#CBD5E0',
+              background: 'teal.300',
               borderRadius: '4px',
             },
           }}
@@ -97,7 +99,9 @@ const App = () => {
           <DropableSection title="In Progress" items={inProgressItems} />
           <DropableSection title="Done" items={doneItems} />
         </Flex>
-        <InsertTask onAddTask={onAddtask} />
+        <Flex justifyContent={'center'} alignItems={'center'} marginLeft={-50}>
+          <InsertTask onAddTask={onAddtask} />
+        </Flex>
       </Flex>
     </DndContext>
   );

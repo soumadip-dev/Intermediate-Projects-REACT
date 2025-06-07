@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Flex, Text, Button } from '@chakra-ui/react';
+import { Input, Flex, Text, Button, Box } from '@chakra-ui/react';
 
 interface InsertTaskProps {
   onAddTask: (title: string, section: string, id: string) => void;
@@ -11,56 +11,80 @@ const InsertTask: React.FC<InsertTaskProps> = ({ onAddTask }) => {
 
   const handleAdd = () => {
     if (!title || !section) return;
-    const id = crypto.randomUUID(); // or use any ID generator
+    const id = crypto.randomUUID();
     onAddTask(title, section, id);
     setTitle('');
     setSection('');
   };
 
   return (
-    <Flex
-      backgroundColor="gray.800"
-      padding={3}
-      borderRadius={8}
-      margin={2}
-      border="1px solid gray.600"
-      boxShadow="0 0 10px 0 rgba(0, 0, 0, 0.2)"
-      alignItems="center"
-      gap={2}
+    <Box
+      bg="white"
+      p={6}
+      borderRadius="lg"
+      boxShadow="lg"
+      border="1px solid"
+      borderColor="gray.200"
+      minW="350px"
+      height="fit-content"
     >
-      <Text fontSize="xl" fontWeight="bold" color="white" flex={1} textAlign="center">
-        Add new Task
+      <Text fontSize="xl" fontWeight="bold" color="teal.600" mb={4} textAlign="center">
+        Add New Task
       </Text>
 
-      <Input
-        type="text"
-        placeholder="Enter your task..."
-        backgroundColor="white"
-        color="black"
-        flex={2}
-        value={title}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-      />
+      <Flex direction="column" gap={4}>
+        <Input
+          color={'teal.600'}
+          type="text"
+          placeholder="Task description..."
+          bg="gray.50"
+          value={title}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          _focus={{
+            borderColor: 'teal.400',
+            boxShadow: '0 0 0 1px teal.400',
+          }}
+          size="lg"
+        />
 
-      <Input
-        list="section-options"
-        placeholder="Select section..."
-        backgroundColor="white"
-        color="black"
-        flex={2}
-        value={section}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSection(e.target.value)}
-      />
-      <datalist id="section-options">
-        <option value="Todo" />
-        <option value="In Progress" />
-        <option value="Done" />
-      </datalist>
+        <Flex position="relative" direction="column">
+          <Text fontSize="sm" color="gray.600" mb={1} fontWeight="medium">
+            Select section:
+          </Text>
+          <Input
+            color={'teal.600'}
+            list="section-options"
+            placeholder="Type or select..."
+            bg="gray.50"
+            value={section}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSection(e.target.value)}
+            _focus={{
+              borderColor: 'teal.400',
+              boxShadow: '0 0 0 1px teal.400',
+            }}
+            size="lg"
+          />
+          <datalist id="section-options">
+            <option value="Todo" />
+            <option value="In Progress" />
+            <option value="Done" />
+          </datalist>
+        </Flex>
 
-      <Button flex={1} margin={2} backgroundColor="green.600" color="white" onClick={handleAdd}>
-        Add
-      </Button>
-    </Flex>
+        <Button
+          colorScheme="teal"
+          size="lg"
+          onClick={handleAdd}
+          _hover={{ transform: 'translateY(-2px)' }}
+          _active={{ transform: 'translateY(0)' }}
+          transition="all 0.2s"
+          backgroundColor={'teal.600'}
+          mt={2}
+        >
+          Add Task
+        </Button>
+      </Flex>
+    </Box>
   );
 };
 
