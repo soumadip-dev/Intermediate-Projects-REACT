@@ -1,8 +1,15 @@
 import Icon from '../Icon/Icon';
 
-const Card = ({ iconName }) => {
+const Card = ({ onPlay, player, index }) => {
+  let icon = <Icon />;
+  if (player === 'O') {
+    icon = <Icon name="circle" />;
+  } else if (player === 'X') {
+    icon = <Icon name="cross" />;
+  }
   return (
     <div
+      onClick={() => onPlay(index)}
       className="
       border-2 border-gray-800 
       flex justify-center items-center 
@@ -13,7 +20,7 @@ const Card = ({ iconName }) => {
       shadow-md
     "
     >
-      <Icon name={iconName} />
+      {icon}
     </div>
   );
 };

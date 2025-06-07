@@ -5,7 +5,7 @@
 </h1>
 
 <div align="center">
-<img src="https://skillicons.dev/icons?i=js,ts,react,github" alt="Tech Stack" width="160" style="margin: 0 5px;">
+<img src="https://skillicons.dev/icons?i=js,ts,react,tailwind,github" alt="Tech Stack" width="160" style="margin: 0 5px;">
 </div>
 
 <h3 align="center" style="margin: 20px 0;">
