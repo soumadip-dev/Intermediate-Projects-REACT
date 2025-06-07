@@ -59,7 +59,6 @@ const App = () => {
     addToSection(section, { id, title });
   }
 
-  // ... (keep all the imports and logic exactly the same until the return statement)
 
   return (
     <DndContext
