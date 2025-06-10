@@ -22,22 +22,32 @@ interface PokemonSummary {
   url: string;
 }
 
+interface PokemonListResponse {
+  results: PokemonSummary[];
+  next: string | null;
+  previous: string | null;
+}
+
 const PokemonList = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [pokedexUrl, setPokedexUrl] = useState<string>('https://pokeapi.co/api/v2/pokemon');
+
+  const [nextUrl, setNextUrl] = useState<string | null>('');
+  const [prevUrl, setPrevUrl] = useState<string | null>('');
 
   useEffect(() => {
     const fetchPokemons = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        setIsLoading(true);
-        setError(null);
-
         // Fetch Initial list of pokemons
-        const listResponse = await axios.get<{ results: PokemonSummary[] }>(
-          'https://pokeapi.co/api/v2/pokemon'
-        );
+        const listResponse = await axios.get<PokemonListResponse>(pokedexUrl);
         const pokemonSummaries = listResponse.data.results;
+
+        setNextUrl(listResponse.data.next);
+        setPrevUrl(listResponse.data.previous);
 
         // Fetch detailed data for each pokemon in parallel
         const pokemonDetails = pokemonSummaries.map((pokemon: { url: string }) =>
@@ -56,7 +66,6 @@ const PokemonList = () => {
             types: pokemon.data.types,
           };
         });
-        console.log(extractedData);
 
         // Update state once with all data
         setPokemons(extractedData);
@@ -67,7 +76,7 @@ const PokemonList = () => {
       }
     };
     fetchPokemons();
-  }, []);
+  }, [pokedexUrl]);
 
   return (
     <div className="h-[calc(100%-120px)] overflow-y-auto pb-8">
@@ -82,7 +91,8 @@ const PokemonList = () => {
 
       {error && (
         <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-lg shadow-md">
-          {/* ... (keep error display the same) */}
+          <p className="font-bold">Error:</p>
+          <p>{error}</p>
         </div>
       )}
 
@@ -92,12 +102,23 @@ const PokemonList = () => {
         ))}
       </div>
       <div className="flex justify-center gap-4 mt-8">
-        <button className="px-6 py-2 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg hover:from-red-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
-          Previous
-        </button>
-        <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-yellow-500 text-white rounded-lg hover:from-blue-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
-          Next
-        </button>
+        {prevUrl && (
+          <button
+            className="px-6 py-2 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg hover:from-red-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            onClick={() => setPokedexUrl(prevUrl)}
+          >
+            Previous
+          </button>
+        )}
+
+        {nextUrl && (
+          <button
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-yellow-500 text-white rounded-lg hover:from-blue-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            onClick={() => setPokedexUrl(nextUrl)}
+          >
+            Next
+          </button>
+        )}
       </div>
     </div>
   );
