@@ -1,18 +1,20 @@
 const Pokemon = ({ name, image }: { name: string; image: string }) => {
   return (
-    <div className="rounded-xl overflow-hidden shadow-lg bg-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group">
-      <div className="p-4 bg-gradient-to-r from-indigo-500 to-blue-500">
-        <h3 className="text-xl font-bold text-center text-white capitalize truncate">{name}</h3>
+    <div className="rounded-xl overflow-hidden shadow-xl bg-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border-2 border-yellow-300">
+      <div className="p-4 bg-gradient-to-r from-red-500 via-blue-500 to-yellow-500">
+        <h3 className="text-xl font-bold text-center text-white capitalize truncate drop-shadow-md">
+          {name}
+        </h3>
       </div>
-      <div className="flex justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="flex justify-center p-6 bg-gradient-to-br from-gray-50 via-blue-50 to-yellow-50">
         {image ? (
           <img
             src={image}
             alt={name}
-            className="w-32 h-32 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
+            className="w-32 h-32 object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 drop-shadow-lg"
           />
         ) : (
-          <div className="w-32 h-32 flex items-center justify-center bg-gray-200 text-gray-500 rounded-lg">
+          <div className="w-32 h-32 flex items-center justify-center bg-gradient-to-br from-red-100 via-blue-100 to-yellow-100 text-gray-500 rounded-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-12 w-12"

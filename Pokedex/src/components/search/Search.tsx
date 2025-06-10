@@ -4,7 +4,7 @@ const Search = () => {
       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-indigo-400 group-focus-within:text-indigo-600 transition-colors"
+          className="h-6 w-6 text-red-500 group-focus-within:text-yellow-500 transition-colors"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -20,16 +20,12 @@ const Search = () => {
       <input
         type="text"
         placeholder="Find your Pokémon..."
-        className="w-full pl-12 pr-5 py-4 text-lg bg-gray-50 border-2 border-gray-200 rounded-xl shadow-sm 
-                 focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500 focus:outline-none 
-                 transition-all duration-200 placeholder-gray-400
-                 hover:border-indigo-300 hover:shadow-md"
+        className="w-full pl-12 pr-5 py-4 text-lg bg-white border-4 border-blue-400 rounded-xl shadow-lg 
+                 focus:ring-4 focus:ring-yellow-300 focus:border-red-500 focus:outline-none 
+                 transition-all duration-200 placeholder-blue-300
+                 hover:border-yellow-400 hover:shadow-xl"
       />
-      <div className="absolute inset-y-0 right-0 flex items-center pr-4">
-        <span className="text-xs font-semibold text-gray-400 bg-gray-100 px-2 py-1 rounded">
-          ⌘K
-        </span>
-      </div>
+      <div className="absolute inset-y-0 right-0 flex items-center pr-4"></div>
     </div>
   );
 };

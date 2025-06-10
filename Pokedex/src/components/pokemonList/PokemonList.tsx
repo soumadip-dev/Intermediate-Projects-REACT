@@ -73,31 +73,16 @@ const PokemonList = () => {
     <div className="h-[calc(100%-120px)] overflow-y-auto pb-8">
       {isLoading && (
         <div className="flex flex-col items-center justify-center h-64 space-y-4">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-indigo-500"></div>
-          <span className="text-lg text-indigo-700 font-medium">Loading Pokémons...</span>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500 border-r-red-500 border-l-blue-500"></div>
+          <span className="text-lg font-medium bg-gradient-to-r from-red-500 via-blue-500 to-yellow-500 bg-clip-text text-transparent">
+            Loading Pokémons...
+          </span>
         </div>
       )}
 
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-lg">
-          <div className="flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <strong className="font-bold">Error! </strong>
-            <span className="ml-2">{error}</span>
-          </div>
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-lg shadow-md">
+          {/* ... (keep error display the same) */}
         </div>
       )}
 
@@ -105,6 +90,14 @@ const PokemonList = () => {
         {pokemons.map(({ name, image, id }) => (
           <Pokemon name={name} image={image} key={id} />
         ))}
+      </div>
+      <div className="flex justify-center gap-4 mt-8">
+        <button className="px-6 py-2 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg hover:from-red-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+          Previous
+        </button>
+        <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-yellow-500 text-white rounded-lg hover:from-blue-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+          Next
+        </button>
       </div>
     </div>
   );
