@@ -1,109 +1,11 @@
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-
-interface Pokemon {
-  name: string;
-  image: string;
-  types: PokemonType[];
-  height: number;
-  weight: number;
-  abilities: PokemonAbility[];
-  id: number;
-  stats: PokemonStat[];
-  base_experience: number;
-  species: {
-    url: string;
-  };
-}
-
-interface PokemonType {
-  slot: number;
-  type: {
-    name: string;
-    url: string;
-  };
-}
-
-interface PokemonAbility {
-  ability: {
-    name: string;
-    url: string;
-  };
-  is_hidden: boolean;
-  slot: number;
-}
-
-interface PokemonStat {
-  base_stat: number;
-  effort: number;
-  stat: {
-    name: string;
-    url: string;
-  };
-}
-
-interface PokemonSpecies {
-  capture_rate: number;
-}
+import SimilarPokemon from './SimilerPokemon';
+import usePokemonDetails from '../hooks/usePokemonDetails';
 
 const PokemonDetails = () => {
   const { id } = useParams();
-  const link = `https://pokeapi.co/api/v2/pokemon/${id}/`;
 
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [captureRate, setCaptureRate] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        // Fetch Pokémon data
-        const response = await axios.get(link);
-
-        // Fetch species data for capture rate
-        const speciesResponse = await axios.get(response.data.species.url);
-
-        setPokemon({
-          id: response.data.id,
-          name: response.data.name,
-          image: response.data.sprites.other
-            ? response.data.sprites.other.dream_world.front_default ||
-              response.data.sprites.other['official-artwork'].front_default
-            : response.data.sprites.front_shiny,
-          height: response.data.height,
-          weight: response.data.weight,
-          abilities: response.data.abilities,
-          types: response.data.types,
-          stats: response.data.stats,
-          base_experience: response.data.base_experience,
-          species: response.data.species,
-        });
-
-        setCaptureRate(speciesResponse.data.capture_rate);
-      } catch (error) {
-        console.error('Error fetching Pokémon data:', error);
-        setError(error instanceof Error ? error.message : 'Failed to load Pokémon details');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchData();
-  }, [link]);
-
-  const statNames: Record<string, string> = {
-    hp: 'HP',
-    attack: 'Attack',
-    defense: 'Defense',
-    'special-attack': 'Sp. Atk',
-    'special-defense': 'Sp. Def',
-    speed: 'Speed',
-  };
-
+  const { pokemon, captureRate, isLoading, error, statNames } = usePokemonDetails({ id: id || 0 });
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-yellow-50 p-4 md:p-8">
       {/* Back Button */}
@@ -310,6 +212,7 @@ const PokemonDetails = () => {
           <p className="text-lg text-gray-600">No Pokémon data found</p>
         </div>
       )}
+      <SimilarPokemon typeName={pokemon?.types[0].type.name} currentPokemonId={pokemon?.id} />
     </div>
   );
 };

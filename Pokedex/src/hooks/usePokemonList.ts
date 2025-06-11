@@ -27,61 +27,82 @@ interface PokemonListResponse {
   previous: string | null;
 }
 
+interface TypePokemon {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+}
+
+interface TypeResponse {
+  pokemon: TypePokemon[];
+}
+
 interface AllStates {
   pokemons: Pokemon[];
   isLoading: boolean;
   error: string | null;
-  pokedexUrl: string;
+  currentUrl: string;
   nextUrl: string | null;
   prevUrl: string | null;
 }
-const usePokemonList = () => {
-  const [pokemonStates, setPokemonStates] = useState<AllStates>({
+
+const usePokemonList = (initialUrl: string, type: boolean) => {
+  const [state, setState] = useState<AllStates>({
     pokemons: [],
     isLoading: true,
     error: null,
-    pokedexUrl: 'https://pokeapi.co/api/v2/pokemon',
+    currentUrl: initialUrl,
     nextUrl: null,
     prevUrl: null,
   });
 
-  const fetchPokemons = async () => {
+  const fetchPokemons = async (url: string) => {
     try {
-      setPokemonStates(prev => ({ ...prev, isLoading: true, error: null }));
+      setState(prev => ({ ...prev, isLoading: true, error: null }));
 
-      const listResponse = await axios.get<PokemonListResponse>(pokemonStates.pokedexUrl);
-      const pokemonSummaries = listResponse.data.results;
+      if (type) {
+        const typeResponse = await axios.get<TypeResponse>(url);
+        const pokemonSummaries = typeResponse.data.pokemon.slice(0, 5).map(p => p.pokemon);
 
-      // Combine state updates
-      setPokemonStates(prev => ({
-        ...prev,
-        nextUrl: listResponse.data.next,
-        prevUrl: listResponse.data.previous,
-      }));
+        const pokemonDetails = pokemonSummaries.map(pokemon => axios.get(pokemon.url));
+        const pokemonData = await axios.all(pokemonDetails);
 
-      const pokemonDetails = pokemonSummaries.map((pokemon: { url: string }) =>
-        axios.get(pokemon.url)
-      );
-      const pokemonData = await axios.all(pokemonDetails);
+        setState({
+          pokemons: pokemonData.map(p => ({
+            id: p.data.id,
+            name: p.data.name,
+            image: p.data.sprites.other?.dream_world.front_default || p.data.sprites.front_shiny,
+            types: p.data.types,
+          })),
+          isLoading: false,
+          error: null,
+          currentUrl: url,
+          nextUrl: null,
+          prevUrl: null,
+        });
+      } else {
+        const listResponse = await axios.get<PokemonListResponse>(url);
+        const pokemonDetails = await axios.all(
+          listResponse.data.results.map(p => axios.get(p.url))
+        );
 
-      const extractedData: Pokemon[] = pokemonData.map(pokemon => {
-        return {
-          id: pokemon.data.id,
-          name: pokemon.data.name,
-          image: pokemon.data.sprites.other
-            ? pokemon.data.sprites.other.dream_world.front_default
-            : pokemon.data.sprites.front_shiny,
-          types: pokemon.data.types,
-        };
-      });
-
-      setPokemonStates(prev => ({
-        ...prev,
-        pokemons: extractedData,
-        isLoading: false,
-      }));
+        setState({
+          pokemons: pokemonDetails.map(p => ({
+            id: p.data.id,
+            name: p.data.name,
+            image: p.data.sprites.other?.dream_world.front_default || p.data.sprites.front_shiny,
+            types: p.data.types,
+          })),
+          isLoading: false,
+          error: null,
+          currentUrl: url,
+          nextUrl: listResponse.data.next,
+          prevUrl: listResponse.data.previous,
+        });
+      }
     } catch (error) {
-      setPokemonStates(prev => ({
+      setState(prev => ({
         ...prev,
         error: error instanceof Error ? error.message : 'Failed to fetch Pokemons',
         isLoading: false,
@@ -90,9 +111,17 @@ const usePokemonList = () => {
   };
 
   useEffect(() => {
-    fetchPokemons();
-  }, [pokemonStates.pokedexUrl]);
+    fetchPokemons(initialUrl);
+  }, [initialUrl, type]);
 
-  return { pokemonStates, setPokemonStates };
+  const setUrl = (newUrl: string) => {
+    fetchPokemons(newUrl);
+  };
+
+  return {
+    pokemonStates: state,
+    setPokemonUrl: setUrl,
+  };
 };
+
 export default usePokemonList;

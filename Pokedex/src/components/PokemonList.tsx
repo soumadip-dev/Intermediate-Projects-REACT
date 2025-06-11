@@ -2,7 +2,10 @@ import Pokemon from './Pokemon';
 import usePokemonList from '../hooks/usePokemonList';
 
 const PokemonList = () => {
-  const { pokemonStates, setPokemonStates } = usePokemonList();
+  const { pokemonStates, setPokemonUrl } = usePokemonList(
+    'https://pokeapi.co/api/v2/pokemon',
+    false
+  );
   return (
     <div className="h-[calc(100%-120px)] overflow-y-auto pb-8">
       {pokemonStates.isLoading ? (
@@ -28,9 +31,7 @@ const PokemonList = () => {
             {pokemonStates.prevUrl && (
               <button
                 className="px-6 py-2 bg-gradient-to-r from-red-500 to-yellow-500 text-white rounded-lg hover:from-red-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
-                onClick={() =>
-                  setPokemonStates({ ...pokemonStates, pokedexUrl: pokemonStates.prevUrl! })
-                }
+                onClick={() => setPokemonUrl(pokemonStates.prevUrl!)}
               >
                 Previous
               </button>
@@ -38,9 +39,7 @@ const PokemonList = () => {
             {pokemonStates.nextUrl && (
               <button
                 className="px-6 py-2 bg-gradient-to-r from-blue-500 to-yellow-500 text-white rounded-lg hover:from-blue-600 hover:to-yellow-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
-                onClick={() =>
-                  setPokemonStates({ ...pokemonStates, pokedexUrl: pokemonStates.nextUrl! })
-                }
+                onClick={() => setPokemonUrl(pokemonStates.nextUrl!)}
               >
                 Next
               </button>
