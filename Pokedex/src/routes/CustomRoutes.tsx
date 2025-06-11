@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
-import Pokedex from '../components/Pokedex/Pokedex';
-import PokemonDetails from '../components/PokemonDetails/PokemonDetails';
-import NotFound from '../components/NotFound/NotFound';
+import Pokedex from '../components/Pokedex';
+import PokemonDetails from '../components/PokemonDetails';
+import NotFound from '../components/NotFound';
 const CustomRoutes = () => {
   return (
     <Routes>

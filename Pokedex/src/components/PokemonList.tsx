@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Pokemon from '../Pokemon/Pokemon';
+import Pokemon from './Pokemon';
 
 interface Pokemon {
   name: string;

@@ -1,5 +1,5 @@
-import PokemonList from '../pokemonList/PokemonList';
-import Search from '../search/Search';
+import PokemonList from './PokemonList';
+import Search from './Search';
 
 const Pokedex = () => {
   return (
