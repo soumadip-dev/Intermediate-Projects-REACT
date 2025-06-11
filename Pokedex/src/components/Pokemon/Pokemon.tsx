@@ -1,6 +1,10 @@
-const Pokemon = ({ name, image }: { name: string; image: string }) => {
+import { Link } from 'react-router-dom';
+const Pokemon = ({ name, image, id }: { name: string; image: string; id: number }) => {
   return (
-    <div className="rounded-xl overflow-hidden shadow-xl bg-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border-2 border-yellow-300">
+    <Link
+      className="rounded-xl overflow-hidden shadow-xl bg-white hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group border-2 border-yellow-300"
+      to={`/pokemon/${id}`}
+    >
       <div className="p-4 bg-gradient-to-r from-red-500 via-blue-500 to-yellow-500">
         <h3 className="text-xl font-bold text-center text-white capitalize truncate drop-shadow-md">
           {name}
@@ -32,7 +36,7 @@ const Pokemon = ({ name, image }: { name: string; image: string }) => {
           </div>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 export default Pokemon;

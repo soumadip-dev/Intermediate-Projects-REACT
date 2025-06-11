@@ -1,9 +1,9 @@
-import Pokedex from './components/pokedex/Pokedex';
+import CustomRoutes from './routes/CustomRoutes';
 
 const App = () => {
   return (
     <div>
-      <Pokedex />
+      <CustomRoutes />
     </div>
   );
 };
