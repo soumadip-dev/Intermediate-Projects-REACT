@@ -16,10 +16,7 @@ const NotFound = () => {
             <h1 className="text-8xl font-bold bg-gradient-to-r from-red-500 via-blue-500 to-yellow-500 bg-clip-text text-transparent mb-4">
               404
             </h1>
-            <p className="text-2xl sm:text-3xl text-gray-600 font-medium">
-              Oops! Pokémon Not Found
-            </p>
-            <p className="text-lg text-gray-500 mt-2">The Pokémon you're looking for has fled!</p>
+            <p className="text-2xl sm:text-3xl text-gray-600 font-medium">Oops! Page Not Found</p>
           </div>
         </div>
       </div>

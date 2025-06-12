@@ -1,4 +1,3 @@
-import { useState } from 'react';
 const Search = ({ updateSearchTerm }: { updateSearchTerm: (value: string) => void }) => {
   return (
     <div className="mb-8 relative group">

@@ -1,24 +1,13 @@
-import { useRef, useEffect } from 'react';
-
-interface UseDebounceProps {
-  callback: () => void;
-  delay: number;
-  deps?: any[];
-}
-
-const useDebounce = ({ callback, delay, deps = [] }: UseDebounceProps) => {
-  const handler = useRef<number | null>(null); 
-
+import { useState, useEffect } from 'react';
+const useDebounce = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
-    if (handler.current) clearTimeout(handler.current);
-    handler.current = window.setTimeout(() => {
-      callback();
-    }, delay); 
-
-    return () => {
-      if (handler.current) clearTimeout(handler.current);
-    };
-  }, [delay, ...deps, callback]);
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+    // CleanUp: Cancel the timer if the value or delay changes
+    return () => clearInterval(handler);
+  }, [value, delay]);
+  return debouncedValue;
 };
-
 export default useDebounce;

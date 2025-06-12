@@ -32,6 +32,7 @@ Try it here: [Pokédex Live Demo](#)
   - Responsive grid layout
   - Loading states and error handling
   - Next/Previous navigation
+  - Search functionality (Debounced)
 
 - **Detailed Pokémon View**
   - Complete stat visualization

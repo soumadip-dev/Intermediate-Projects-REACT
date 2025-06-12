@@ -2,8 +2,10 @@ import PokemonList from './PokemonList';
 import Search from './Search';
 import { useState } from 'react';
 import SearchedPokemon from './SearchedPokemon';
+import useDebounce from '../hooks/useDebounce';
 const Pokedex = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-yellow-100 via-red-100 to-blue-100">
       <div className="w-full h-full p-4">
@@ -17,10 +19,10 @@ const Pokedex = () => {
             </div>
           </div>
           <Search updateSearchTerm={setSearchTerm} />
-          {searchTerm.length === 0 ? (
+          {debouncedSearchTerm.length === 0 ? (
             <PokemonList />
           ) : (
-            <SearchedPokemon name={searchTerm} key={searchTerm} />
+            <SearchedPokemon name={debouncedSearchTerm} key={debouncedSearchTerm} />
           )}
         </div>
       </div>

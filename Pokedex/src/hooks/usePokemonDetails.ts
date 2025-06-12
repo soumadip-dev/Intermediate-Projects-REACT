@@ -76,7 +76,6 @@ const usePokemonDetails = (identifier: { id?: string | number; name?: string }) 
       try {
         // Construct the URL based on what's provided
         const link = `https://pokeapi.co/api/v2/pokemon/${identifier.name ?? identifier.id}/`;
-        console.log(link);
 
         // Fetch Pokémon data
         const response = await axios.get(link);
@@ -102,7 +101,6 @@ const usePokemonDetails = (identifier: { id?: string | number; name?: string }) 
 
         setCaptureRate(speciesResponse.data.capture_rate);
       } catch (error) {
-        // console.error('Error fetching Pokémon data:', error);
         setError('Failed to fetch Pokémon data');
       } finally {
         setIsLoading(false);
