@@ -45,9 +45,18 @@ interface PokemonStat {
 interface PokemonSpecies {
   capture_rate: number;
 }
-const usePokemonDetails = ({ id }: { id: string | number }) => {
-  const link = `https://pokeapi.co/api/v2/pokemon/${id}/`;
 
+const fetchAllPokemonNames = async () => {
+  try {
+    const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1300');
+    return response.data.results.map((p: { name: string }) => p.name.toLowerCase());
+  } catch (error) {
+    console.error('Failed to fetch Pokémon list:', error);
+    return [];
+  }
+};
+
+const usePokemonDetails = (identifier: { id?: string | number; name?: string }) => {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [captureRate, setCaptureRate] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -55,9 +64,20 @@ const usePokemonDetails = ({ id }: { id: string | number }) => {
 
   useEffect(() => {
     async function fetchData() {
+      if (!identifier.id && !identifier.name) {
+        setError('Either id or name must be provided');
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
       setError(null);
+
       try {
+        // Construct the URL based on what's provided
+        const link = `https://pokeapi.co/api/v2/pokemon/${identifier.name ?? identifier.id}/`;
+        console.log(link);
+
         // Fetch Pokémon data
         const response = await axios.get(link);
 
@@ -82,15 +102,15 @@ const usePokemonDetails = ({ id }: { id: string | number }) => {
 
         setCaptureRate(speciesResponse.data.capture_rate);
       } catch (error) {
-        console.error('Error fetching Pokémon data:', error);
-        setError(error instanceof Error ? error.message : 'Failed to load Pokémon details');
+        // console.error('Error fetching Pokémon data:', error);
+        setError('Failed to fetch Pokémon data');
       } finally {
         setIsLoading(false);
       }
     }
 
     fetchData();
-  }, [link]);
+  }, [identifier.id, identifier.name]);
 
   const statNames: Record<string, string> = {
     hp: 'HP',
@@ -103,4 +123,5 @@ const usePokemonDetails = ({ id }: { id: string | number }) => {
 
   return { pokemon, captureRate, isLoading, error, statNames };
 };
+
 export default usePokemonDetails;

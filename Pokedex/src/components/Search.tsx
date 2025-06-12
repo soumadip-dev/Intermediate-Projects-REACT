@@ -1,4 +1,5 @@
-const Search = () => {
+import { useState } from 'react';
+const Search = ({ updateSearchTerm }: { updateSearchTerm: (value: string) => void }) => {
   return (
     <div className="mb-8 relative group">
       <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
@@ -24,6 +25,7 @@ const Search = () => {
                  focus:ring-4 focus:ring-yellow-300 focus:border-red-500 focus:outline-none 
                  transition-all duration-200 placeholder-blue-300
                  hover:border-yellow-400 hover:shadow-xl"
+        onChange={e => updateSearchTerm(e.target.value)}
       />
       <div className="absolute inset-y-0 right-0 flex items-center pr-4"></div>
     </div>

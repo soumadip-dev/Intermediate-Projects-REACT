@@ -1,7 +1,9 @@
 import PokemonList from './PokemonList';
 import Search from './Search';
-
+import { useState } from 'react';
+import SearchedPokemon from './SearchedPokemon';
 const Pokedex = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-yellow-100 via-red-100 to-blue-100">
       <div className="w-full h-full p-4">
@@ -14,8 +16,12 @@ const Pokedex = () => {
               <div className="w-6 h-6 bg-white rounded-full border-2 border-gray-300"></div>
             </div>
           </div>
-          <Search />
-          <PokemonList />
+          <Search updateSearchTerm={setSearchTerm} />
+          {searchTerm.length === 0 ? (
+            <PokemonList />
+          ) : (
+            <SearchedPokemon name={searchTerm} key={searchTerm} />
+          )}
         </div>
       </div>
     </div>
