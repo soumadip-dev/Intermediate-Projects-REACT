@@ -101,9 +101,56 @@ function NumResult() {
 }
 
 function Main() {
+  return (
+    <main className="mt-8 h-[calc(100vh-7.2rem-3*2.4rem)] flex gap-8 justify-center px-8">
+      <ListBox />
+      <WatchedBox />
+    </main>
+  );
+}
+
+function ListBox() {
   const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen1, setIsOpen1] = useState(true);
+  return (
+    <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
+      <button
+        className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-gray-700 text-gray-200 text-base font-bold cursor-pointer z-50 hover:bg-gray-600 transition-all shadow-md flex items-center justify-center"
+        onClick={() => setIsOpen1(open => !open)}
+      >
+        {isOpen1 ? '–' : '+'}
+      </button>
+      {isOpen1 && (
+        <ul className="divide-y divide-gray-700/50">
+          {movies?.map(movie => (
+            <li
+              key={movie.imdbID}
+              className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors cursor-pointer"
+            >
+              <img
+                className="w-16 h-20 object-cover rounded-lg shadow-md"
+                src={movie.Poster}
+                alt={`${movie.Title} poster`}
+              />
+              <div>
+                <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
+                <div className="flex items-center gap-4 mt-1 text-gray-400">
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-gray-500">🗓</span>
+                    <span>{movie.Year}</span>
+                  </span>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function WatchedBox() {
+  const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen2, setIsOpen2] = useState(true);
 
   const avgImdbRating = average(watched.map(movie => movie.imdbRating));
@@ -111,21 +158,44 @@ function Main() {
   const avgRuntime = average(watched.map(movie => movie.runtime));
 
   return (
-    <main className="mt-8 h-[calc(100vh-7.2rem-3*2.4rem)] flex gap-8 justify-center px-8">
-      {/* Left Box */}
-      <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
-        <button
-          className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-gray-700 text-gray-200 text-base font-bold cursor-pointer z-50 hover:bg-gray-600 transition-all shadow-md flex items-center justify-center"
-          onClick={() => setIsOpen1(open => !open)}
-        >
-          {isOpen1 ? '–' : '+'}
-        </button>
-        {isOpen1 && (
-          <ul className="divide-y divide-gray-700/50">
-            {movies?.map(movie => (
+    <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
+      <button
+        className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-gray-700 text-gray-200 text-base font-bold cursor-pointer z-50 hover:bg-gray-600 transition-all shadow-md flex items-center justify-center"
+        onClick={() => setIsOpen2(open => !open)}
+      >
+        {isOpen2 ? '–' : '+'}
+      </button>
+      {isOpen2 && (
+        <>
+          <div className="p-6 bg-gradient-to-r from-purple-800/30 to-indigo-900/30 rounded-t-xl shadow-sm">
+            <h2 className="uppercase text-sm mb-1 font-bold tracking-wider text-gray-300">
+              Movies you watched
+            </h2>
+            <div className="flex flex-wrap items-center gap-6 text-base font-semibold mt-4">
+              <p className="flex items-center gap-2 text-gray-300">
+                <span className="text-gray-400">#️⃣</span>
+                <span>{watched.length} movies</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="text-yellow-400">⭐️</span>
+                <span>{avgImdbRating.toFixed(1)}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="text-yellow-300">🌟</span>
+                <span>{avgUserRating.toFixed(1)}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="text-blue-400">⏳</span>
+                <span>{avgRuntime.toFixed(0)} min</span>
+              </p>
+            </div>
+          </div>
+
+          <ul className="divide-y divide-gray-700/50 max-h-[calc(100%-9rem)] overflow-auto">
+            {watched.map(movie => (
               <li
                 key={movie.imdbID}
-                className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors cursor-pointer"
+                className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors"
               >
                 <img
                   className="w-16 h-20 object-cover rounded-lg shadow-md"
@@ -134,87 +204,26 @@ function Main() {
                 />
                 <div>
                   <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
-                  <div className="flex items-center gap-4 mt-1 text-gray-400">
-                    <span className="flex items-center gap-1.5">
-                      <span className="text-gray-500">🗓</span>
-                      <span>{movie.Year}</span>
-                    </span>
+                  <div className="flex flex-wrap items-center gap-4 mt-1 text-sm">
+                    <p className="flex items-center gap-1.5">
+                      <span className="text-yellow-400">⭐️</span>
+                      <span>{movie.imdbRating}</span>
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="text-yellow-300">🌟</span>
+                      <span>{movie.userRating}</span>
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="text-blue-400">⏳</span>
+                      <span>{movie.runtime} min</span>
+                    </p>
                   </div>
                 </div>
               </li>
             ))}
           </ul>
-        )}
-      </div>
-
-      {/* Right Box */}
-      <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
-        <button
-          className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-gray-700 text-gray-200 text-base font-bold cursor-pointer z-50 hover:bg-gray-600 transition-all shadow-md flex items-center justify-center"
-          onClick={() => setIsOpen2(open => !open)}
-        >
-          {isOpen2 ? '–' : '+'}
-        </button>
-        {isOpen2 && (
-          <>
-            <div className="p-6 bg-gradient-to-r from-purple-800/30 to-indigo-900/30 rounded-t-xl shadow-sm">
-              <h2 className="uppercase text-sm mb-1 font-bold tracking-wider text-gray-300">
-                Movies you watched
-              </h2>
-              <div className="flex flex-wrap items-center gap-6 text-base font-semibold mt-4">
-                <p className="flex items-center gap-2 text-gray-300">
-                  <span className="text-gray-400">#️⃣</span>
-                  <span>{watched.length} movies</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-yellow-400">⭐️</span>
-                  <span>{avgImdbRating.toFixed(1)}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-yellow-300">🌟</span>
-                  <span>{avgUserRating.toFixed(1)}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="text-blue-400">⏳</span>
-                  <span>{avgRuntime.toFixed(0)} min</span>
-                </p>
-              </div>
-            </div>
-
-            <ul className="divide-y divide-gray-700/50 max-h-[calc(100%-9rem)] overflow-auto">
-              {watched.map(movie => (
-                <li
-                  key={movie.imdbID}
-                  className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors"
-                >
-                  <img
-                    className="w-16 h-20 object-cover rounded-lg shadow-md"
-                    src={movie.Poster}
-                    alt={`${movie.Title} poster`}
-                  />
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
-                    <div className="flex flex-wrap items-center gap-4 mt-1 text-sm">
-                      <p className="flex items-center gap-1.5">
-                        <span className="text-yellow-400">⭐️</span>
-                        <span>{movie.imdbRating}</span>
-                      </p>
-                      <p className="flex items-center gap-1.5">
-                        <span className="text-yellow-300">🌟</span>
-                        <span>{movie.userRating}</span>
-                      </p>
-                      <p className="flex items-center gap-1.5">
-                        <span className="text-blue-400">⏳</span>
-                        <span>{movie.runtime} min</span>
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </div>
-    </main>
+        </>
+      )}
+    </div>
   );
 }
