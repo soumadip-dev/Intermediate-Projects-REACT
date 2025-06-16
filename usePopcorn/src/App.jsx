@@ -110,7 +110,6 @@ function Main() {
 }
 
 function ListBox() {
-  const [movies, setMovies] = useState(tempMovieData);
   const [isOpen1, setIsOpen1] = useState(true);
   return (
     <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
@@ -120,32 +119,39 @@ function ListBox() {
       >
         {isOpen1 ? '–' : '+'}
       </button>
-      {isOpen1 && (
-        <ul className="divide-y divide-gray-700/50">
-          {movies?.map(movie => (
-            <li
-              key={movie.imdbID}
-              className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors cursor-pointer"
-            >
-              <img
-                className="w-16 h-20 object-cover rounded-lg shadow-md"
-                src={movie.Poster}
-                alt={`${movie.Title} poster`}
-              />
-              <div>
-                <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
-                <div className="flex items-center gap-4 mt-1 text-gray-400">
-                  <span className="flex items-center gap-1.5">
-                    <span className="text-gray-500">🗓</span>
-                    <span>{movie.Year}</span>
-                  </span>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      {isOpen1 && <MovieList />}
     </div>
+  );
+}
+
+function MovieList() {
+  const [movies, setMovies] = useState(tempMovieData);
+  return (
+    <ul className="divide-y divide-gray-700/50">
+      {movies?.map(movie => (
+        <Movie movie={movie} key={movie.imdbID} />
+      ))}
+    </ul>
+  );
+}
+function Movie({ movie }) {
+  return (
+    <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors cursor-pointer">
+      <img
+        className="w-16 h-20 object-cover rounded-lg shadow-md"
+        src={movie.Poster}
+        alt={`${movie.Title} poster`}
+      />
+      <div>
+        <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
+        <div className="flex items-center gap-4 mt-1 text-gray-400">
+          <span className="flex items-center gap-1.5">
+            <span className="text-gray-500">🗓</span>
+            <span>{movie.Year}</span>
+          </span>
+        </div>
+      </div>
+    </li>
   );
 }
 
