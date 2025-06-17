@@ -159,10 +159,6 @@ function WatchedBox() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen2, setIsOpen2] = useState(true);
 
-  const avgImdbRating = average(watched.map(movie => movie.imdbRating));
-  const avgUserRating = average(watched.map(movie => movie.userRating));
-  const avgRuntime = average(watched.map(movie => movie.runtime));
-
   return (
     <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
       <button
@@ -173,63 +169,80 @@ function WatchedBox() {
       </button>
       {isOpen2 && (
         <>
-          <div className="p-6 bg-gradient-to-r from-purple-800/30 to-indigo-900/30 rounded-t-xl shadow-sm">
-            <h2 className="uppercase text-sm mb-1 font-bold tracking-wider text-gray-300">
-              Movies you watched
-            </h2>
-            <div className="flex flex-wrap items-center gap-6 text-base font-semibold mt-4">
-              <p className="flex items-center gap-2 text-gray-300">
-                <span className="text-gray-400">#️⃣</span>
-                <span>{watched.length} movies</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <span className="text-yellow-400">⭐️</span>
-                <span>{avgImdbRating.toFixed(1)}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <span className="text-yellow-300">🌟</span>
-                <span>{avgUserRating.toFixed(1)}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <span className="text-blue-400">⏳</span>
-                <span>{avgRuntime.toFixed(0)} min</span>
-              </p>
-            </div>
-          </div>
-
-          <ul className="divide-y divide-gray-700/50 max-h-[calc(100%-9rem)] overflow-auto">
-            {watched.map(movie => (
-              <li
-                key={movie.imdbID}
-                className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors"
-              >
-                <img
-                  className="w-16 h-20 object-cover rounded-lg shadow-md"
-                  src={movie.Poster}
-                  alt={`${movie.Title} poster`}
-                />
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
-                  <div className="flex flex-wrap items-center gap-4 mt-1 text-sm">
-                    <p className="flex items-center gap-1.5">
-                      <span className="text-yellow-400">⭐️</span>
-                      <span>{movie.imdbRating}</span>
-                    </p>
-                    <p className="flex items-center gap-1.5">
-                      <span className="text-yellow-300">🌟</span>
-                      <span>{movie.userRating}</span>
-                    </p>
-                    <p className="flex items-center gap-1.5">
-                      <span className="text-blue-400">⏳</span>
-                      <span>{movie.runtime} min</span>
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <WatechedSummary watched={watched} />
+          <WatchedMovieList watched={watched} />
         </>
       )}
     </div>
+  );
+}
+
+function WatechedSummary({ watched }) {
+  const avgImdbRating = average(watched.map(movie => movie.imdbRating));
+  const avgUserRating = average(watched.map(movie => movie.userRating));
+  const avgRuntime = average(watched.map(movie => movie.runtime));
+  return (
+    <div className="p-6 bg-gradient-to-r from-purple-800/30 to-indigo-900/30 rounded-t-xl shadow-sm">
+      <h2 className="uppercase text-sm mb-1 font-bold tracking-wider text-gray-300">
+        Movies you watched
+      </h2>
+      <div className="flex flex-wrap items-center gap-6 text-base font-semibold mt-4">
+        <p className="flex items-center gap-2 text-gray-300">
+          <span className="text-gray-400">#️⃣</span>
+          <span>{watched.length} movies</span>
+        </p>
+        <p className="flex items-center gap-2">
+          <span className="text-yellow-400">⭐️</span>
+          <span>{avgImdbRating.toFixed(1)}</span>
+        </p>
+        <p className="flex items-center gap-2">
+          <span className="text-yellow-300">🌟</span>
+          <span>{avgUserRating.toFixed(1)}</span>
+        </p>
+        <p className="flex items-center gap-2">
+          <span className="text-blue-400">⏳</span>
+          <span>{avgRuntime.toFixed(0)} min</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function WatchedMovieList({ watched }) {
+  return (
+    <ul className="divide-y divide-gray-700/50 max-h-[calc(100%-9rem)] overflow-auto">
+      {watched.map(movie => (
+        <WatchedMovie movie={movie} key={movie.imdbID} />
+      ))}
+    </ul>
+  );
+}
+
+function WatchedMovie({ movie }) {
+  return (
+    <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors">
+      <img
+        className="w-16 h-20 object-cover rounded-lg shadow-md"
+        src={movie.Poster}
+        alt={`${movie.Title} poster`}
+      />
+      <div>
+        <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
+        <div className="flex flex-wrap items-center gap-4 mt-1 text-sm">
+          <p className="flex items-center gap-1.5">
+            <span className="text-yellow-400">⭐️</span>
+            <span>{movie.imdbRating}</span>
+          </p>
+          <p className="flex items-center gap-1.5">
+            <span className="text-yellow-300">🌟</span>
+            <span>{movie.userRating}</span>
+          </p>
+          <p className="flex items-center gap-1.5">
+            <span className="text-blue-400">⏳</span>
+            <span>{movie.runtime} min</span>
+          </p>
+        </div>
+      </div>
+    </li>
   );
 }
