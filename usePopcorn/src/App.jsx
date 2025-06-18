@@ -51,7 +51,7 @@ const average = arr => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100">
       <Navber />
       <Main />
     </div>
@@ -60,7 +60,7 @@ export default function App() {
 
 function Navber() {
   return (
-    <nav className="bg-gradient-to-r from-purple-800 to-indigo-900 h-28 p-0 px-8 grid grid-cols-3 items-center shadow-xl">
+    <nav className="bg-gray-900/80 backdrop-blur-sm h-20 p-0 px-8 grid grid-cols-3 items-center shadow-lg border-b border-gray-800 sticky top-0 z-50">
       <Logo />
       <Search />
       <NumResult />
@@ -71,10 +71,12 @@ function Navber() {
 function Logo() {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-4xl" role="img">
+      <span className="text-3xl text-amber-400" role="img">
         🍿
       </span>
-      <h1 className="text-3xl font-bold text-white tracking-tight">usePopcorn</h1>
+      <h1 className="text-2xl font-bold text-amber-400 tracking-tight">
+        <span className="text-white">use</span>Popcorn
+      </h1>
     </div>
   );
 }
@@ -83,7 +85,7 @@ function Search() {
   const [query, setQuery] = useState('');
   return (
     <input
-      className="justify-self-center border-none py-3 px-4 text-lg rounded-full w-full max-w-2xl transition-all duration-300 text-gray-200 bg-purple-600/80 backdrop-blur-sm placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:shadow-lg hover:bg-purple-600/90"
+      className="justify-self-center bg-gray-800/70 border border-gray-700 py-2.5 px-5 text-base rounded-full w-full max-w-2xl transition-all duration-300 text-white shadow-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-transparent hover:bg-gray-800/90"
       type="text"
       placeholder="Search movies..."
       value={query}
@@ -94,8 +96,8 @@ function Search() {
 
 function NumResult() {
   return (
-    <p className="justify-self-end text-lg text-gray-200 font-medium">
-      Found <strong className="text-white">{'X'}</strong> results
+    <p className="justify-self-end text-base text-gray-300 font-medium">
+      Found <strong className="text-amber-400">X</strong> results
     </p>
   );
 }
@@ -112,9 +114,9 @@ function Main() {
 function ListBox() {
   const [isOpen1, setIsOpen1] = useState(true);
   return (
-    <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
+    <div className="w-full max-w-2xl bg-gray-800/70 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl relative border border-gray-700">
       <button
-        className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-gray-700 text-gray-200 text-base font-bold cursor-pointer z-50 hover:bg-gray-600 transition-all shadow-md flex items-center justify-center"
+        className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-amber-400/10 text-amber-400 text-base font-bold cursor-pointer z-50 hover:bg-amber-400/20 transition-all shadow-sm flex items-center justify-center backdrop-blur-sm"
         onClick={() => setIsOpen1(open => !open)}
       >
         {isOpen1 ? '–' : '+'}
@@ -127,7 +129,7 @@ function ListBox() {
 function MovieList() {
   const [movies, setMovies] = useState(tempMovieData);
   return (
-    <ul className="divide-y divide-gray-700/50">
+    <ul className="divide-y divide-gray-700">
       {movies?.map(movie => (
         <Movie movie={movie} key={movie.imdbID} />
       ))}
@@ -136,17 +138,19 @@ function MovieList() {
 }
 function Movie({ movie }) {
   return (
-    <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors cursor-pointer">
+    <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors cursor-pointer group">
       <img
-        className="w-16 h-20 object-cover rounded-lg shadow-md"
+        className="w-16 h-20 object-cover rounded-md shadow-lg border border-gray-700 group-hover:border-amber-400/30 transition-colors"
         src={movie.Poster}
         alt={`${movie.Title} poster`}
       />
       <div>
-        <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
-        <div className="flex items-center gap-4 mt-1 text-gray-400">
-          <span className="flex items-center gap-1.5">
-            <span className="text-gray-500">🗓</span>
+        <h3 className="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">
+          {movie.Title}
+        </h3>
+        <div className="flex items-center gap-4 mt-1 text-gray-300">
+          <span className="flex items-center gap-1.5 text-sm">
+            <span className="text-gray-400">🗓</span>
             <span>{movie.Year}</span>
           </span>
         </div>
@@ -160,9 +164,9 @@ function WatchedBox() {
   const [isOpen2, setIsOpen2] = useState(true);
 
   return (
-    <div className="w-full max-w-2xl bg-gray-800 rounded-xl overflow-hidden shadow-2xl relative border border-gray-700">
+    <div className="w-full max-w-2xl bg-gray-800/70 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl relative border border-gray-700">
       <button
-        className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-gray-700 text-gray-200 text-base font-bold cursor-pointer z-50 hover:bg-gray-600 transition-all shadow-md flex items-center justify-center"
+        className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-amber-400/10 text-amber-400 text-base font-bold cursor-pointer z-50 hover:bg-amber-400/20 transition-all shadow-sm flex items-center justify-center backdrop-blur-sm"
         onClick={() => setIsOpen2(open => !open)}
       >
         {isOpen2 ? '–' : '+'}
@@ -182,24 +186,24 @@ function WatechedSummary({ watched }) {
   const avgUserRating = average(watched.map(movie => movie.userRating));
   const avgRuntime = average(watched.map(movie => movie.runtime));
   return (
-    <div className="p-6 bg-gradient-to-r from-purple-800/30 to-indigo-900/30 rounded-t-xl shadow-sm">
-      <h2 className="uppercase text-sm mb-1 font-bold tracking-wider text-gray-300">
+    <div className="p-5 bg-gray-800/50 border-b border-gray-700">
+      <h2 className="uppercase text-xs mb-1 font-bold tracking-wider text-amber-400">
         Movies you watched
       </h2>
-      <div className="flex flex-wrap items-center gap-6 text-base font-semibold mt-4">
+      <div className="flex flex-wrap items-center gap-6 text-sm font-semibold mt-3">
         <p className="flex items-center gap-2 text-gray-300">
           <span className="text-gray-400">#️⃣</span>
           <span>{watched.length} movies</span>
         </p>
-        <p className="flex items-center gap-2">
+        <p className="flex items-center gap-2 text-gray-300">
           <span className="text-yellow-400">⭐️</span>
           <span>{avgImdbRating.toFixed(1)}</span>
         </p>
-        <p className="flex items-center gap-2">
-          <span className="text-yellow-300">🌟</span>
+        <p className="flex items-center gap-2 text-gray-300">
+          <span className="text-amber-300">🌟</span>
           <span>{avgUserRating.toFixed(1)}</span>
         </p>
-        <p className="flex items-center gap-2">
+        <p className="flex items-center gap-2 text-gray-300">
           <span className="text-blue-400">⏳</span>
           <span>{avgRuntime.toFixed(0)} min</span>
         </p>
@@ -210,7 +214,7 @@ function WatechedSummary({ watched }) {
 
 function WatchedMovieList({ watched }) {
   return (
-    <ul className="divide-y divide-gray-700/50 max-h-[calc(100%-9rem)] overflow-auto">
+    <ul className="divide-y divide-gray-700 max-h-[calc(100%-9rem)] overflow-auto">
       {watched.map(movie => (
         <WatchedMovie movie={movie} key={movie.imdbID} />
       ))}
@@ -220,21 +224,23 @@ function WatchedMovieList({ watched }) {
 
 function WatchedMovie({ movie }) {
   return (
-    <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors">
+    <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors group">
       <img
-        className="w-16 h-20 object-cover rounded-lg shadow-md"
+        className="w-16 h-20 object-cover rounded-md shadow-lg border border-gray-700 group-hover:border-amber-400/30 transition-colors"
         src={movie.Poster}
         alt={`${movie.Title} poster`}
       />
       <div>
-        <h3 className="text-xl font-semibold text-gray-100">{movie.Title}</h3>
-        <div className="flex flex-wrap items-center gap-4 mt-1 text-sm">
+        <h3 className="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">
+          {movie.Title}
+        </h3>
+        <div className="flex flex-wrap items-center gap-4 mt-1 text-sm text-gray-300">
           <p className="flex items-center gap-1.5">
             <span className="text-yellow-400">⭐️</span>
             <span>{movie.imdbRating}</span>
           </p>
           <p className="flex items-center gap-1.5">
-            <span className="text-yellow-300">🌟</span>
+            <span className="text-amber-300">🌟</span>
             <span>{movie.userRating}</span>
           </p>
           <p className="flex items-center gap-1.5">
