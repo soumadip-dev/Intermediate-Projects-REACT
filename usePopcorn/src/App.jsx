@@ -50,20 +50,21 @@ const tempWatchedData = [
 const average = arr => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
+  const [movies, setMovies] = useState(tempMovieData);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100">
-      <Navber />
-      <Main />
+      <Navber movies={movies} />
+      <Main movies={movies} />
     </div>
   );
 }
 
-function Navber() {
+function Navber({ movies }) {
   return (
     <nav className="bg-gray-900/80 backdrop-blur-sm h-20 p-0 px-8 grid grid-cols-3 items-center shadow-lg border-b border-gray-800 sticky top-0 z-50">
       <Logo />
       <Search />
-      <NumResult />
+      <NumResult movies={movies} />
     </nav>
   );
 }
@@ -94,24 +95,24 @@ function Search() {
   );
 }
 
-function NumResult() {
+function NumResult({ movies }) {
   return (
     <p className="justify-self-end text-base text-gray-300 font-medium">
-      Found <strong className="text-amber-400">X</strong> results
+      Found <strong className="text-amber-400">{movies.length}</strong> results
     </p>
   );
 }
 
-function Main() {
+function Main({ movies }) {
   return (
     <main className="mt-8 h-[calc(100vh-7.2rem-3*2.4rem)] flex gap-8 justify-center px-8">
-      <ListBox />
+      <ListBox movies={movies} />
       <WatchedBox />
     </main>
   );
 }
 
-function ListBox() {
+function ListBox({ movies }) {
   const [isOpen1, setIsOpen1] = useState(true);
   return (
     <div className="w-full max-w-2xl bg-gray-800/70 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl relative border border-gray-700">
@@ -121,13 +122,12 @@ function ListBox() {
       >
         {isOpen1 ? '–' : '+'}
       </button>
-      {isOpen1 && <MovieList />}
+      {isOpen1 && <MovieList movies={movies} />}
     </div>
   );
 }
 
-function MovieList() {
-  const [movies, setMovies] = useState(tempMovieData);
+function MovieList({ movies }) {
   return (
     <ul className="divide-y divide-gray-700">
       {movies?.map(movie => (
