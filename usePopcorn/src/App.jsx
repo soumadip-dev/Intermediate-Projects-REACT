@@ -53,18 +53,25 @@ export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100">
-      <Navber movies={movies} />
-      <Main movies={movies} />
+      <Navber>
+        <Search />
+        <NumResult movies={movies} />
+      </Navber>
+      <Main>
+        <ListBox>
+          <MovieList movies={movies} />
+        </ListBox>
+        <WatchedBox />
+      </Main>
     </div>
   );
 }
 
-function Navber({ movies }) {
+function Navber({ children }) {
   return (
     <nav className="bg-gray-900/80 backdrop-blur-sm h-20 p-0 px-8 grid grid-cols-3 items-center shadow-lg border-b border-gray-800 sticky top-0 z-50">
       <Logo />
-      <Search />
-      <NumResult movies={movies} />
+      {children}
     </nav>
   );
 }
@@ -103,16 +110,15 @@ function NumResult({ movies }) {
   );
 }
 
-function Main({ movies }) {
+function Main({ children }) {
   return (
     <main className="mt-8 h-[calc(100vh-7.2rem-3*2.4rem)] flex gap-8 justify-center px-8">
-      <ListBox movies={movies} />
-      <WatchedBox />
+      {children}
     </main>
   );
 }
 
-function ListBox({ movies }) {
+function ListBox({ children }) {
   const [isOpen1, setIsOpen1] = useState(true);
   return (
     <div className="w-full max-w-2xl bg-gray-800/70 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl relative border border-gray-700">
@@ -122,7 +128,7 @@ function ListBox({ movies }) {
       >
         {isOpen1 ? '–' : '+'}
       </button>
-      {isOpen1 && <MovieList movies={movies} />}
+      {isOpen1 && children}
     </div>
   );
 }
