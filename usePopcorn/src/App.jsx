@@ -51,6 +51,7 @@ const average = arr => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
+  const [watched, setWatched] = useState(tempWatchedData);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100">
       <Navber>
@@ -58,10 +59,13 @@ export default function App() {
         <NumResult movies={movies} />
       </Navber>
       <Main>
-        <ListBox>
+        <Box>
           <MovieList movies={movies} />
-        </ListBox>
-        <WatchedBox />
+        </Box>
+        <Box>
+          <WatchedSummary watched={watched} />
+          <WatchedMovieList watched={watched} />
+        </Box>
       </Main>
     </div>
   );
@@ -118,17 +122,17 @@ function Main({ children }) {
   );
 }
 
-function ListBox({ children }) {
-  const [isOpen1, setIsOpen1] = useState(true);
+function Box({ children }) {
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <div className="w-full max-w-2xl bg-gray-800/70 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl relative border border-gray-700">
       <button
         className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-amber-400/10 text-amber-400 text-base font-bold cursor-pointer z-50 hover:bg-amber-400/20 transition-all shadow-sm flex items-center justify-center backdrop-blur-sm"
-        onClick={() => setIsOpen1(open => !open)}
+        onClick={() => setIsOpen(open => !open)}
       >
-        {isOpen1 ? '–' : '+'}
+        {isOpen ? '–' : '+'}
       </button>
-      {isOpen1 && children}
+      {isOpen && children}
     </div>
   );
 }
@@ -165,29 +169,7 @@ function Movie({ movie }) {
   );
 }
 
-function WatchedBox() {
-  const [watched, setWatched] = useState(tempWatchedData);
-  const [isOpen2, setIsOpen2] = useState(true);
-
-  return (
-    <div className="w-full max-w-2xl bg-gray-800/70 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl relative border border-gray-700">
-      <button
-        className="absolute top-3 right-3 h-7 w-7 rounded-full border-none bg-amber-400/10 text-amber-400 text-base font-bold cursor-pointer z-50 hover:bg-amber-400/20 transition-all shadow-sm flex items-center justify-center backdrop-blur-sm"
-        onClick={() => setIsOpen2(open => !open)}
-      >
-        {isOpen2 ? '–' : '+'}
-      </button>
-      {isOpen2 && (
-        <>
-          <WatechedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
-        </>
-      )}
-    </div>
-  );
-}
-
-function WatechedSummary({ watched }) {
+function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map(movie => movie.imdbRating));
   const avgUserRating = average(watched.map(movie => movie.userRating));
   const avgRuntime = average(watched.map(movie => movie.runtime));
