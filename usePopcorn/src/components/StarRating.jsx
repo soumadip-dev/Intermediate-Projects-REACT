@@ -1,7 +1,13 @@
 import { useState } from 'react';
 
-const StarRating = ({ maxRating = 5, color = 'yellow-400', size = 12 }) => {
-  const [rating, setRating] = useState(0);
+const StarRating = ({
+  maxRating = 5,
+  color = 'yellow-400',
+  size = 12,
+  messages = [],
+  defaultRating = 0,
+}) => {
+  const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
 
   const handleRating = rating => {
@@ -23,13 +29,17 @@ const StarRating = ({ maxRating = 5, color = 'yellow-400', size = 12 }) => {
           />
         ))}
       </div>
-      <p className={`text-${color} text-${size} leading-none m-0`}>{tempRating || rating || ''}</p>
+      <p className={`text-${color} text-${size} leading-none m-0`}>
+        {messages.length === maxRating
+          ? messages[tempRating ? tempRating - 1 : rating - 1]
+          : tempRating || rating || ''}
+      </p>
     </div>
   );
 };
 export default StarRating;
 
-function Star({ onRate, full, onHoverIn, onHoverOut, color, size }) {
+const Star = ({ onRate, full, onHoverIn, onHoverOut, color, size }) => {
   const sizeClasses = {
     6: 'w-6 h-6',
     8: 'w-8 h-8',
@@ -74,4 +84,4 @@ function Star({ onRate, full, onHoverIn, onHoverOut, color, size }) {
       )}
     </span>
   );
-}
+};

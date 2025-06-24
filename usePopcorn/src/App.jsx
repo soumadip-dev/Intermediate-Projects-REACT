@@ -71,16 +71,16 @@ export default function App() {
   );
 }
 
-function Navber({ children }) {
+const Navber = ({ children }) => {
   return (
     <nav className="bg-gray-900/80 backdrop-blur-sm h-20 p-0 px-8 grid grid-cols-3 items-center shadow-lg border-b border-gray-800 sticky top-0 z-50">
       <Logo />
       {children}
     </nav>
   );
-}
+};
 
-function Logo() {
+const Logo = () => {
   return (
     <div className="flex items-center gap-3">
       <span className="text-3xl text-amber-400" role="img">
@@ -91,9 +91,9 @@ function Logo() {
       </h1>
     </div>
   );
-}
+};
 
-function Search() {
+const Search = () => {
   const [query, setQuery] = useState('');
   return (
     <input
@@ -104,25 +104,25 @@ function Search() {
       onChange={e => setQuery(e.target.value)}
     />
   );
-}
+};
 
-function NumResult({ movies }) {
+const NumResult = ({ movies }) => {
   return (
     <p className="justify-self-end text-base text-gray-300 font-medium">
       Found <strong className="text-amber-400">{movies.length}</strong> results
     </p>
   );
-}
+};
 
-function Main({ children }) {
+const Main = ({ children }) => {
   return (
     <main className="mt-8 h-[calc(100vh-7.2rem-3*2.4rem)] flex gap-8 justify-center px-8">
       {children}
     </main>
   );
-}
+};
 
-function Box({ children }) {
+const Box = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
   return (
     <div className="w-full max-w-2xl bg-gray-800/70 backdrop-blur-sm rounded-lg overflow-hidden shadow-xl relative border border-gray-700">
@@ -135,9 +135,9 @@ function Box({ children }) {
       {isOpen && children}
     </div>
   );
-}
+};
 
-function MovieList({ movies }) {
+const MovieList = ({ movies }) => {
   return (
     <ul className="divide-y divide-gray-700">
       {movies?.map(movie => (
@@ -145,8 +145,8 @@ function MovieList({ movies }) {
       ))}
     </ul>
   );
-}
-function Movie({ movie }) {
+};
+const Movie = ({ movie }) => {
   return (
     <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors cursor-pointer group">
       <img
@@ -167,9 +167,9 @@ function Movie({ movie }) {
       </div>
     </li>
   );
-}
+};
 
-function WatchedSummary({ watched }) {
+const WatchedSummary = ({ watched }) => {
   const avgImdbRating = average(watched.map(movie => movie.imdbRating));
   const avgUserRating = average(watched.map(movie => movie.userRating));
   const avgRuntime = average(watched.map(movie => movie.runtime));
@@ -198,9 +198,9 @@ function WatchedSummary({ watched }) {
       </div>
     </div>
   );
-}
+};
 
-function WatchedMovieList({ watched }) {
+const WatchedMovieList = ({ watched }) => {
   return (
     <ul className="divide-y divide-gray-700 max-h-[calc(100%-9rem)] overflow-auto">
       {watched.map(movie => (
@@ -208,9 +208,9 @@ function WatchedMovieList({ watched }) {
       ))}
     </ul>
   );
-}
+};
 
-function WatchedMovie({ movie }) {
+const WatchedMovie = ({ movie }) => {
   return (
     <li className="grid grid-cols-[auto_1fr] gap-4 text-base items-center p-5 hover:bg-gray-700/50 transition-colors group">
       <img
@@ -239,4 +239,4 @@ function WatchedMovie({ movie }) {
       </div>
     </li>
   );
-}
+};
