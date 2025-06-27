@@ -2,9 +2,11 @@
 
 ## A modern Pokédex application built with React and TypeScript that allows users to browse and explore Pokémon with beautiful visuals and detailed information.
 
-## 🌐 Live Demo
+---
 
-Try it here: [Pokédex Live Demo](#)
+## 📽️ Watch the Demo
+
+Check out the demo video on my [LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7354376652681834496/)!
 
 ---
 
