@@ -6,7 +6,7 @@ A modern Tic Tac Toe game built with React and styled with Tailwind CSS, featuri
 
 ## Live Demo
 
-You can play the game online [here](#).
+[here](https://www.linkedin.com/posts/soumadip-majila-dgp_react-javascript-tailwindcss-activity-7345483600990994432-_TVO?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAD1aMJQBxnv5DdAHrtZuCweFePs_SWP_DFE).
 
 ## How to Play
 
