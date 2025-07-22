@@ -4,12 +4,6 @@ A simple and interactive Kanban Board built with **React**, **TypeScript**, **Ch
 
 ---
 
-## 🌐 Live Demo
-
-Try it here: [Kanban Board Live Demo](#)
-
----
-
 ## 📸 Preview
 
 <div align="center">
